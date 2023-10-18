@@ -56,6 +56,13 @@ dependencies {
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
 
+    implementation(libs.mapbox)
+    implementation(libs.mapbox.compose)
+
+    implementation(libs.accompanist.permissions)
+
+    implementation(libs.location.services)
+
     // Default, came with new project setup
     implementation(libs.core.ktx)
     implementation(libs.lifecycle.runtime.ktx)

@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">PicQuestV2</string>
+    <string name="mapbox_access_token">pk.eyJ1Ijoibm1hdGhld3M5MyIsImEiOiJjbDkzZ3JsNmIwZjFkM3Fudnd2Y2Z1b2p1In0.zJNK-BlSKUutKhEBc4DGng</string>
 </resources>
