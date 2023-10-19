@@ -1,4 +1,4 @@
-package dev.mathewsmobile.picquestv2.ui.components
+package dev.mathewsmobile.picquestv2.ui.component
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
