@@ -12,6 +12,10 @@ import dev.mathewsmobile.picquestv2.data.LocationRepository
 import dev.mathewsmobile.picquestv2.ui.component.AddLocationFab
 import dev.mathewsmobile.picquestv2.ui.component.LocationList
 
+object LocationListScreen {
+    const val route = "LocationListScreen"
+}
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LocationListScreen() {

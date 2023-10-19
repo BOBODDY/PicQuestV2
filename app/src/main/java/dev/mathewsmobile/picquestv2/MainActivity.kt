@@ -7,6 +7,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import com.mapbox.maps.MapboxExperimental
 import dev.mathewsmobile.picquestv2.ui.screen.LocationListScreen
 import dev.mathewsmobile.picquestv2.ui.theme.PicQuestV2Theme
@@ -16,13 +19,22 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+            val navController = rememberNavController()
+
             PicQuestV2Theme {
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    LocationListScreen()
+                    NavHost(
+                        navController = navController,
+                        startDestination = LocationListScreen.route
+                    ) {
+                        composable(LocationListScreen.route) {
+                            LocationListScreen()
+                        }
+                    }
                 }
             }
         }
