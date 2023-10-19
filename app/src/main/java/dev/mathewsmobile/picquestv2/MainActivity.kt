@@ -12,6 +12,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.mapbox.maps.MapboxExperimental
 import dev.mathewsmobile.picquestv2.ui.screen.LocationListScreen
+import dev.mathewsmobile.picquestv2.ui.screen.NewLocationScreen
 import dev.mathewsmobile.picquestv2.ui.theme.PicQuestV2Theme
 
 class MainActivity : ComponentActivity() {
@@ -32,7 +33,10 @@ class MainActivity : ComponentActivity() {
                         startDestination = LocationListScreen.route
                     ) {
                         composable(LocationListScreen.route) {
-                            LocationListScreen()
+                            LocationListScreen(navController)
+                        }
+                        composable(NewLocationScreen.route) {
+                            NewLocationScreen(navController)
                         }
                     }
                 }

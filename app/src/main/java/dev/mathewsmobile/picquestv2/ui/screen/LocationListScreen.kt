@@ -8,6 +8,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import dev.mathewsmobile.picquestv2.data.LocationRepository
 import dev.mathewsmobile.picquestv2.ui.component.AddLocationFab
 import dev.mathewsmobile.picquestv2.ui.component.LocationList
@@ -18,9 +20,9 @@ object LocationListScreen {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LocationListScreen() {
+fun LocationListScreen(navController: NavController) {
     val locationRepo = LocationRepository()
-    Scaffold(floatingActionButton = { AddLocationFab({}) }) {
+    Scaffold(floatingActionButton = { AddLocationFab { navController.navigate(NewLocationScreen.route) } }) {
         Box(
             modifier = Modifier
                 .padding(it)
@@ -34,5 +36,5 @@ fun LocationListScreen() {
 @Preview
 @Composable
 fun LocationListScreenPreview() {
-    LocationListScreen()
+    LocationListScreen(rememberNavController())
 }
