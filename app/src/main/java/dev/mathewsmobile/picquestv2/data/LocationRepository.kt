@@ -1,8 +1,9 @@
 package dev.mathewsmobile.picquestv2.data
 
 import dev.mathewsmobile.picquestv2.model.Location
+import javax.inject.Inject
 
-class LocationRepository {
+class LocationRepository @Inject constructor() {
 
     private var locations = mutableListOf<Location>(
         Location(

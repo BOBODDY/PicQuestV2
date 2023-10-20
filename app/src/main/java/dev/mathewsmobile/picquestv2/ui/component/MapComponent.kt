@@ -11,7 +11,7 @@ import com.mapbox.maps.MapInitOptions
 import com.mapbox.maps.MapboxExperimental
 import com.mapbox.maps.Style
 import com.mapbox.maps.extension.compose.MapboxMap
-import dev.mathewsmobile.picquestv2.MapViewModel
+import dev.mathewsmobile.picquestv2.viewmodel.MapViewModel
 import dev.mathewsmobile.picquestv2.ui.effect.LocationEffect
 
 @OptIn(MapboxExperimental::class)
