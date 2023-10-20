@@ -17,10 +17,11 @@ import dev.mathewsmobile.picquestv2.ui.screen.LocationListScreen
 import dev.mathewsmobile.picquestv2.ui.screen.NewLocationScreen
 import dev.mathewsmobile.picquestv2.ui.theme.PicQuestV2Theme
 import dev.mathewsmobile.picquestv2.viewmodel.LocationListViewModel
+import dev.mathewsmobile.picquestv2.viewmodel.NewLocationViewModel
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-    @OptIn(MapboxExperimental::class)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -41,7 +42,8 @@ class MainActivity : ComponentActivity() {
                             LocationListScreen(navController, viewModel = viewModel)
                         }
                         composable(NewLocationScreen.route) {
-                            NewLocationScreen(navController)
+                            val viewModel by viewModels<NewLocationViewModel>()
+                            NewLocationScreen(navController, viewModel)
                         }
                     }
                 }
