@@ -68,6 +68,5 @@ fun LocationListComponent(locations: List<Location>, onAddClick: () -> Unit) {
 @Preview
 @Composable
 fun LocationListScreenPreview() {
-    val locationRepo = LocationRepository()
-    LocationListComponent(locationRepo.getLocations(), {})
+    LocationListComponent(emptyList(), {})
 }

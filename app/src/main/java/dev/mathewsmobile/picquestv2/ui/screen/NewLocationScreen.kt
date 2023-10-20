@@ -37,14 +37,12 @@ object NewLocationScreen {
     const val route = "NewLocationScreen"
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NewLocationScreen(
     navController: NavController,
 ) {
-    val locationRepository = LocationRepository() // TODO Inject
     NewLocationComponent {
-        locationRepository.addLocation(it)
+//        locationRepository.addLocation(it) TODO Use ViewModel to do this
         navController.popBackStack()
     }
 }

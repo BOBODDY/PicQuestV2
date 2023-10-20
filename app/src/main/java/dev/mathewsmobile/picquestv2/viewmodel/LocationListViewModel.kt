@@ -35,9 +35,10 @@ class LocationListViewModel @Inject constructor(
     fun fetchLocations() {
         viewModelScope.launch {
             setLoading(true)
-            val locations = locationRepository.getLocations()
-            updateLocations(locations)
-            setLoading(false)
+            locationRepository.getLocations().collect { locations ->
+                updateLocations(locations)
+                setLoading(false)
+            }
         }
     }
 
