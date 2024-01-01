@@ -20,19 +20,23 @@ class LocationRepository @Inject constructor(
         val testLocations = mutableListOf<Location>(
             Location(
                 name = "Pike's Peak",
-                notes = "Pike's Peak is a very tall mountain in Colorado. It's very pretty."
+                notes = "Pike's Peak is a very tall mountain in Colorado. It's very pretty.",
+                tags = emptyList(),
             ),
             Location(
                 name = "Kennesaw Mountain",
-                notes = "My first mountain. It would be good to get a shot at sunrise of the city."
+                notes = "My first mountain. It would be good to get a shot at sunrise of the city.",
+                tags = emptyList(),
             ),
             Location(
                 name = "Big Bend National Park",
-                notes = "Perfect for astrophotography"
+                notes = "Perfect for astrophotography",
+                tags = emptyList(),
             ),
             Location(
                 name = "Glacier",
-                notes = "The glacier's in Iceland are very stark and beautiful."
+                notes = "The glacier's in Iceland are very stark and beautiful.",
+                tags = emptyList(),
             ),
         )
     }
@@ -43,7 +47,8 @@ class LocationRepository @Inject constructor(
                 Location(
                     name = it.name,
                     notes = it.notes,
-                    latLng = LatLng(latitude = it.latitude, longitude = it.longitude)
+                    latLng = LatLng(latitude = it.latitude, longitude = it.longitude),
+                    tags = emptyList(),
                 )
             }
         }

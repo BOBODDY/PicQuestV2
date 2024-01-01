@@ -34,7 +34,7 @@ class NewLocationViewModel @Inject constructor(
 
     fun addNewLocation(name: String, notes: String) {
         viewModelScope.launch {
-            locationRepository.addLocation(Location(name = name, notes = notes))
+            locationRepository.addLocation(Location(name = name, notes = notes, tags = emptyList()))
         }
     }
 }
