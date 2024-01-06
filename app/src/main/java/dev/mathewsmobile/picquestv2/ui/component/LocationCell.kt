@@ -1,6 +1,7 @@
 package dev.mathewsmobile.picquestv2.ui.component
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Card
 import androidx.compose.material3.Text
@@ -14,7 +15,7 @@ import dev.mathewsmobile.picquestv2.model.Location
 
 @Composable
 fun LocationCell(location: Location) {
-    Card(modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)) {
+    Card(modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp).fillMaxWidth()) {
         Column(modifier = Modifier.padding(8.dp)) {
             Text(location.name, fontSize = 16.sp, fontWeight = FontWeight.Bold)
             Text(location.notes, maxLines = 3, overflow = TextOverflow.Ellipsis)

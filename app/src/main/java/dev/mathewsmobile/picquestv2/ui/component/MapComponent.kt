@@ -28,6 +28,8 @@ fun MapComponent(viewModel: MapViewModel) {
                 cameraOptions = CameraOptions.Builder()
                     .center(Point.fromLngLat(center.longitude, center.latitude))
                     .zoom(9.0)
+                    .pitch(0.0)
+                    .bearing(0.0)
                     .build()
             )
         })

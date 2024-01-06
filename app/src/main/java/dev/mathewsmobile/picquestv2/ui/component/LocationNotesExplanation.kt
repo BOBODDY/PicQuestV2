@@ -24,8 +24,7 @@ fun LocationNotesExplanation() {
             """
             Your notes can be anything you want to remember about a certain location and why you want to save it.
             
-            It can be a reminder of why you thought this was a good location to save, or what you want to do when
-            you come back to this location.
+            It can be a reminder of why you thought this was a good location to save, or what you want to do when you come back to this location.
             """.trimIndent()
         )
     }

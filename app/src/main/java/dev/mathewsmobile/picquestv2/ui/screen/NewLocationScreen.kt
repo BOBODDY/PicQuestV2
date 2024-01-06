@@ -125,7 +125,7 @@ fun NewLocationComponent(
             )
             Spacer(modifier = Modifier.height(16.dp))
 
-            Box(modifier = Modifier.fillMaxWidth().height(128.dp).clip(RoundedCornerShape(4.dp))) {
+            Box(modifier = Modifier.fillMaxWidth().height(256.dp).clip(RoundedCornerShape(4.dp))) {
                 MapComponent(viewModel())
             }
 
