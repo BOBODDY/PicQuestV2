@@ -50,9 +50,9 @@ fun TagCell(tag: Tag, isSelected: Boolean, onTap: (Tag) -> Unit) {
 private fun TagPreview() {
     Surface(color = MaterialTheme.colorScheme.background) {
         Column {
-            TagCell(Tag("Item 1"), false, {})
-            TagCell(Tag("Item 2"), true, {})
-            TagCell(Tag("Longer item name"), false, {})
+            TagCell(Tag(name = "Item 1"), false, {})
+            TagCell(Tag(name = "Item 2"), true, {})
+            TagCell(Tag(name = "Longer item name"), false, {})
         }
     }
 }
