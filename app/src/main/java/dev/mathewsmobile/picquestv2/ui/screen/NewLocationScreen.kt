@@ -39,8 +39,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import dev.mathewsmobile.picquestv2.data.TagRepository
+import dev.mathewsmobile.picquestv2.model.Tag
 import dev.mathewsmobile.picquestv2.ui.component.LocationNotesExplanation
 import dev.mathewsmobile.picquestv2.ui.component.MapComponent
+import dev.mathewsmobile.picquestv2.ui.component.TagGroup
 import dev.mathewsmobile.picquestv2.viewmodel.NewLocationViewModel
 import kotlinx.coroutines.launch
 
@@ -55,14 +58,19 @@ fun NewLocationScreen(
 ) {
     val name by viewModel.name.collectAsState()
     val notes by viewModel.notes.collectAsState()
+    val tags by viewModel.tags.collectAsState(initial = emptyList())
+    val selectedTags by viewModel.selectedTags.collectAsState()
 
     NewLocationComponent(
         name = name,
         notes = notes,
+        allTags = tags,
+        selectedTags = selectedTags,
         onNameChange = { viewModel.setName(it) },
         onNoteChange = { viewModel.setNotes(it) },
+        onTagChanged = { viewModel.toggleTag(it) },
         onSaveClick = {
-            viewModel.addNewLocation(name, notes)
+            viewModel.addNewLocation(name, notes, selectedTags)
             navController.popBackStack()
         },
         onCloseClick = { navController.popBackStack() }
@@ -74,10 +82,13 @@ fun NewLocationScreen(
 fun NewLocationComponent(
     name: String,
     notes: String,
+    allTags: List<Tag>,
+    selectedTags: List<Tag>,
     onNameChange: (String) -> Unit,
     onNoteChange: (String) -> Unit,
+    onTagChanged: (Tag) -> Unit,
     onSaveClick: () -> Unit,
-    onCloseClick: () -> Unit
+    onCloseClick: () -> Unit,
 ) {
     val sheetState = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
     var showBottomSheet by remember { mutableStateOf(false) }
@@ -125,10 +136,19 @@ fun NewLocationComponent(
             )
             Spacer(modifier = Modifier.height(16.dp))
 
-            Box(modifier = Modifier.fillMaxWidth().height(256.dp).clip(RoundedCornerShape(4.dp))) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(256.dp)
+                    .clip(RoundedCornerShape(4.dp))
+            ) {
                 MapComponent(viewModel())
             }
 
+            Spacer(modifier = Modifier.height(16.dp))
+            TagGroup(availableTags = allTags, selectedTags = selectedTags) {
+                onTagChanged(it)
+            }
             Spacer(modifier = Modifier.height(16.dp))
             Button(
                 modifier = Modifier.align(Alignment.CenterHorizontally),
@@ -150,6 +170,9 @@ fun Preview() {
         NewLocationComponent(
             "Big Bend National Park",
             "Perfect for astrophotography",
+            TagRepository.testTags,
+            emptyList(),
+            {},
             {},
             {},
             {},
