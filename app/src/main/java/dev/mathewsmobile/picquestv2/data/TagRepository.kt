@@ -13,8 +13,16 @@ class TagRepository @Inject constructor(
     private val tagDao: TagDao
 ) {
 
-    val allTags: Flow<List<Tag>> = tagDao.getAll().map {
-        it.map { mapDbToTag(it) }
+    fun getAllTags(): Flow<List<Tag>> {
+        val tags = tagDao.getAll().map {
+            if (it.isEmpty()) {
+                testTags.forEach { addCustomTag(it) }
+            }
+            it
+        }
+        return tags.map {
+            it.map { mapDbToTag(it) }
+        }
     }
 
     suspend fun addCustomTag(tag: Tag) {

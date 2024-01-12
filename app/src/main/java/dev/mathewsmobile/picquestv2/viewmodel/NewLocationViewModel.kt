@@ -19,7 +19,7 @@ class NewLocationViewModel @Inject constructor(
     private val tagRepository: TagRepository,
 ) : ViewModel() {
 
-    val tags = tagRepository.allTags
+    val tags = tagRepository.getAllTags()
 
     private val _selectedTags = MutableStateFlow(emptyList<Tag>())
     val selectedTags = _selectedTags.asStateFlow()
