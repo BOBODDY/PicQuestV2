@@ -3,9 +3,11 @@ package dev.mathewsmobile.picquestv2.viewmodel
 import androidx.compose.runtime.collectAsState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.mapbox.geojson.Point
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.mathewsmobile.picquestv2.data.LocationRepository
 import dev.mathewsmobile.picquestv2.data.TagRepository
+import dev.mathewsmobile.picquestv2.model.LatLng
 import dev.mathewsmobile.picquestv2.model.Location
 import dev.mathewsmobile.picquestv2.model.Tag
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -38,12 +40,22 @@ class NewLocationViewModel @Inject constructor(
         viewModelScope.launch {
             _notesState.emit(notes)
         }
-
     }
+
+    private var locationPoint: Point? = null
 
     fun addNewLocation(name: String, notes: String, tags: List<Tag>) {
         viewModelScope.launch {
-            locationRepository.addLocation(Location(name = name, notes = notes, tags = tags))
+            val location = Location(
+                name = name,
+                notes = notes,
+                tags = tags,
+                latLng = LatLng(
+                    locationPoint?.latitude()?.toFloat(),
+                    locationPoint?.longitude()?.toFloat()
+                )
+            )
+            locationRepository.addLocation(location)
         }
     }
 
@@ -57,5 +69,9 @@ class NewLocationViewModel @Inject constructor(
         viewModelScope.launch {
             _selectedTags.emit(newTags)
         }
+    }
+
+    fun setLocation(point: Point) {
+        locationPoint = point
     }
 }

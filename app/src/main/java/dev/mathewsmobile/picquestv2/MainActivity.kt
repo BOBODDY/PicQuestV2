@@ -17,6 +17,7 @@ import dev.mathewsmobile.picquestv2.ui.screen.LocationListScreen
 import dev.mathewsmobile.picquestv2.ui.screen.NewLocationScreen
 import dev.mathewsmobile.picquestv2.ui.theme.PicQuestV2Theme
 import dev.mathewsmobile.picquestv2.viewmodel.LocationListViewModel
+import dev.mathewsmobile.picquestv2.viewmodel.MapViewModel
 import dev.mathewsmobile.picquestv2.viewmodel.NewLocationViewModel
 
 @AndroidEntryPoint
@@ -43,7 +44,8 @@ class MainActivity : ComponentActivity() {
                         }
                         composable(NewLocationScreen.route) {
                             val viewModel by viewModels<NewLocationViewModel>()
-                            NewLocationScreen(navController, viewModel)
+                            val mapViewModel by viewModels<MapViewModel>()
+                            NewLocationScreen(navController, viewModel, mapViewModel)
                         }
                     }
                 }

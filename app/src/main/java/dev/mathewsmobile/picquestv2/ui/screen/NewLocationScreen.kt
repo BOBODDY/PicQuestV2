@@ -1,5 +1,6 @@
 package dev.mathewsmobile.picquestv2.ui.screen
 
+import androidx.activity.viewModels
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -39,11 +40,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.mapbox.geojson.Point
+import com.mapbox.maps.MapboxExperimental
 import dev.mathewsmobile.picquestv2.data.TagRepository
 import dev.mathewsmobile.picquestv2.model.Tag
 import dev.mathewsmobile.picquestv2.ui.component.LocationNotesExplanation
 import dev.mathewsmobile.picquestv2.ui.component.MapComponent
 import dev.mathewsmobile.picquestv2.ui.component.TagGroup
+import dev.mathewsmobile.picquestv2.viewmodel.MapViewModel
 import dev.mathewsmobile.picquestv2.viewmodel.NewLocationViewModel
 import kotlinx.coroutines.launch
 
@@ -51,10 +55,12 @@ object NewLocationScreen {
     const val route = "NewLocationScreen"
 }
 
+@OptIn(MapboxExperimental::class)
 @Composable
 fun NewLocationScreen(
     navController: NavController,
     viewModel: NewLocationViewModel,
+    mapViewModel: MapViewModel
 ) {
     val name by viewModel.name.collectAsState()
     val notes by viewModel.notes.collectAsState()
@@ -62,6 +68,7 @@ fun NewLocationScreen(
     val selectedTags by viewModel.selectedTags.collectAsState()
 
     NewLocationComponent(
+        mapViewModel = mapViewModel,
         name = name,
         notes = notes,
         allTags = tags,
@@ -70,6 +77,7 @@ fun NewLocationScreen(
         onNoteChange = { viewModel.setNotes(it) },
         onTagChanged = { viewModel.toggleTag(it) },
         onSaveClick = {
+            viewModel.setLocation(mapViewModel.mapViewportState.value.cameraState.center)
             viewModel.addNewLocation(name, notes, selectedTags)
             navController.popBackStack()
         },
@@ -80,6 +88,7 @@ fun NewLocationScreen(
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
 @Composable
 fun NewLocationComponent(
+    mapViewModel: MapViewModel,
     name: String,
     notes: String,
     allTags: List<Tag>,
@@ -142,7 +151,7 @@ fun NewLocationComponent(
                     .height(256.dp)
                     .clip(RoundedCornerShape(4.dp))
             ) {
-                MapComponent(viewModel())
+                MapComponent(mapViewModel)
             }
 
             Spacer(modifier = Modifier.height(16.dp))
@@ -168,6 +177,7 @@ fun Preview() {
         color = MaterialTheme.colorScheme.background
     ) {
         NewLocationComponent(
+            viewModel(),
             "Big Bend National Park",
             "Perfect for astrophotography",
             TagRepository.testTags,
