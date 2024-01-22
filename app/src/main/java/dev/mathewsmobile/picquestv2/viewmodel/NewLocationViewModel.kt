@@ -1,5 +1,6 @@
 package dev.mathewsmobile.picquestv2.viewmodel
 
+import android.net.Uri
 import androidx.compose.runtime.collectAsState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -44,6 +45,9 @@ class NewLocationViewModel @Inject constructor(
 
     private var locationPoint: Point? = null
 
+    private val _photosState = MutableStateFlow(emptyList<Uri>())
+    val photos = _photosState.asStateFlow()
+
     fun addNewLocation(name: String, notes: String, tags: List<Tag>) {
         viewModelScope.launch {
             val location = Location(
@@ -73,5 +77,11 @@ class NewLocationViewModel @Inject constructor(
 
     fun setLocation(point: Point) {
         locationPoint = point
+    }
+
+    fun addPhoto(uri: Uri) {
+        viewModelScope.launch {
+            _photosState.emit(_photosState.value + uri)
+        }
     }
 }

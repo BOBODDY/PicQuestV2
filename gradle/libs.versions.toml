@@ -16,6 +16,7 @@ location = "18.0.0"
 navigation-compose = "2.7.4"
 room = "2.6.0"
 material = "1.5.4"
+coil-compose = "2.5.0"
 
 [libraries]
 hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
@@ -50,6 +51,7 @@ ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview
 ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 material3 = { group = "androidx.compose.material3", name = "material3" }
+coil = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil-compose" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
