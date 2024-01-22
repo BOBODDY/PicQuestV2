@@ -1,6 +1,7 @@
 package dev.mathewsmobile.picquestv2.ui.screen
 
 import androidx.activity.viewModels
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -9,7 +10,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetLayout
 import androidx.compose.material.ModalBottomSheetValue
@@ -103,6 +106,16 @@ fun NewLocationComponent(
     var showBottomSheet by remember { mutableStateOf(false) }
     val coroutineScope = rememberCoroutineScope()
 
+    var mapExpanded by remember {
+        mutableStateOf(false)
+    }
+    val mapHeight = if (mapExpanded) {
+        512.dp
+    } else {
+        256.dp
+    }
+    val scrollState = rememberScrollState()
+
     ModalBottomSheetLayout(
         sheetState = sheetState,
         sheetShape = RoundedCornerShape(topStart = 12.dp, topEnd = 12.dp),
@@ -110,7 +123,9 @@ fun NewLocationComponent(
             LocationNotesExplanation()
         }
     ) {
-        Column(modifier = Modifier.padding(8.dp)) {
+        Column(modifier = Modifier
+            .padding(8.dp)
+            .verticalScroll(rememberScrollState())) {
             Icon(
                 Icons.Default.Close,
                 modifier = Modifier
@@ -148,10 +163,11 @@ fun NewLocationComponent(
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(256.dp)
+                    .height(mapHeight)
                     .clip(RoundedCornerShape(4.dp))
+                    .animateContentSize()
             ) {
-                MapComponent(mapViewModel)
+                MapComponent(mapViewModel) { mapExpanded = !mapExpanded }
             }
 
             Spacer(modifier = Modifier.height(16.dp))
