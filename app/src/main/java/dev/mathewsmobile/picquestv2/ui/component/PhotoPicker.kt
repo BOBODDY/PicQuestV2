@@ -33,6 +33,7 @@ import coil.compose.AsyncImage
 
 @Composable
 fun PhotoPicker(
+    enabled: Boolean = true,
     photos: List<Uri>,
     maxPerLine: Int = 5,
     onAddPhoto: () -> Unit,
@@ -40,12 +41,14 @@ fun PhotoPicker(
 
     Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
         // TODO Only center the icon, not the title
-        Text(
-            text = "Add Photos",
-            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
-            fontSize = 24.sp,
-            fontWeight = FontWeight.Bold
-        )
+        if (enabled) {
+            Text(
+                text = "Add Photos",
+                modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
+                fontSize = 24.sp,
+                fontWeight = FontWeight.Bold
+            )
+        }
         if (photos.isNotEmpty()) {
             photos.chunked(maxPerLine).map { photoRow ->
                 Row(
@@ -62,8 +65,10 @@ fun PhotoPicker(
             }
         }
         Spacer(modifier = Modifier.height(8.dp))
-        PhotoButton {
-            onAddPhoto()
+        if (enabled) {
+            PhotoButton {
+                onAddPhoto()
+            }
         }
         Spacer(modifier = Modifier.height(8.dp))
     }
@@ -99,6 +104,6 @@ fun PhotoButton(onClick: () -> Unit) {
 @Composable
 fun PhotoPickerPreview() {
     Surface(color = MaterialTheme.colors.background) {
-        PhotoPicker(listOf(), 5, {})
+        PhotoPicker(enabled = true, listOf(), 5, {})
     }
 }

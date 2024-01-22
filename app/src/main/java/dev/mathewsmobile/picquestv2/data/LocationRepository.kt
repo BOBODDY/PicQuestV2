@@ -62,6 +62,21 @@ class LocationRepository @Inject constructor(
         }
     }
 
+    suspend fun getLocation(id: Int): Location? {
+        val locationDb = locationDao.getLocation(id) ?: return null
+
+        val locationTags = tagRepository.getTagsForLocation(id)
+        val locationPhotos = locationDao.getLocationPhotos(id)
+
+        return Location(
+            name = locationDb.name,
+            notes = locationDb.notes,
+            latLng = LatLng(latitude = locationDb.latitude, longitude = locationDb.longitude),
+            tags = locationTags,
+            photoUris = locationPhotos.map { Uri.parse(it.photoUri) }
+        )
+    }
+
     suspend fun addLocation(location: Location) {
         val dbLocation = DbLocation(
             uid = 0,

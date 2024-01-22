@@ -17,9 +17,9 @@ import dev.mathewsmobile.picquestv2.model.Tag
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun TagGroup(availableTags: List<Tag>, selectedTags: List<Tag>, onTagTapped: (Tag) -> Unit) {
+fun TagGroup(enabled: Boolean = true, availableTags: List<Tag>, selectedTags: List<Tag>, onTagTapped: (Tag) -> Unit) {
     FlowRow(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
-        availableTags.map { TagCell(it, selectedTags.contains(it)) { onTagTapped(it) } }
+        availableTags.map { TagCell(it, selectedTags.contains(it)) { if (enabled) { onTagTapped(it) } } }
     }
 }
 
