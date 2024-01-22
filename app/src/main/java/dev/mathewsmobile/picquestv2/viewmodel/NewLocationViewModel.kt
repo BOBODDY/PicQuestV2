@@ -57,7 +57,8 @@ class NewLocationViewModel @Inject constructor(
                 latLng = LatLng(
                     locationPoint?.latitude()?.toFloat(),
                     locationPoint?.longitude()?.toFloat()
-                )
+                ),
+                photoUris = _photosState.value
             )
             locationRepository.addLocation(location)
         }

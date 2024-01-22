@@ -201,6 +201,7 @@ fun NewLocationComponent(
             PhotoPicker(photos = photos) {
                 onAddImage()
             }
+            Spacer(modifier = Modifier.height(16.dp))
             Button(
                 modifier = Modifier.align(Alignment.CenterHorizontally),
                 onClick = onSaveClick
@@ -224,6 +225,7 @@ fun Preview() {
             "Big Bend National Park",
             "Perfect for astrophotography",
             TagRepository.testTags,
+            emptyList(),
             emptyList(),
             {},
             {},

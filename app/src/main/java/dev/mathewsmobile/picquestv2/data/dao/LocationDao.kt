@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import dev.mathewsmobile.picquestv2.model.db.LocationDb
+import dev.mathewsmobile.picquestv2.model.db.LocationPhoto
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -13,4 +14,10 @@ interface LocationDao {
 
     @Insert
     suspend fun addLocation(locationDb: LocationDb): Long
+
+    @Query("SELECT * from location_photo WHERE locationId LIKE :locationId")
+    suspend fun getLocationPhotos(locationId: Int): List<LocationPhoto>
+
+    @Insert
+    suspend fun addLocationPhoto(photo: LocationPhoto)
 }
