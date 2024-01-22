@@ -16,7 +16,7 @@ fun ViewLocationScreen(viewModel: ViewLocationViewModel, navController: NavContr
     val location by viewModel.location.collectAsState()
 
     ViewLocation(
-        name = location!!.name,
+        name = location?.name ?: "",
         description = location?.notes ?: "",
         tags = location?.tags ?: emptyList(),
         location = location?.latLng,

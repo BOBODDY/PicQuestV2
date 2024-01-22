@@ -49,6 +49,7 @@ class MainActivity : ComponentActivity() {
                         composable(NewLocationScreen.route) {
                             val viewModel by viewModels<NewLocationViewModel>()
                             val mapViewModel by viewModels<MapViewModel>()
+                            viewModel.clear()
                             NewLocationScreen(navController, viewModel, mapViewModel)
                         }
                         composable("${ViewLocationScreen.route}/{locationId}",arguments = listOf(

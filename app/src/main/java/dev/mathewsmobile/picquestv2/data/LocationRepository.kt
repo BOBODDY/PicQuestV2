@@ -52,6 +52,7 @@ class LocationRepository @Inject constructor(
                 val locationTags = tagRepository.getTagsForLocation(it.uid)
                 val locationPhotos = locationDao.getLocationPhotos(it.uid)
                 Location(
+                    id = it.uid,
                     name = it.name,
                     notes = it.notes,
                     latLng = LatLng(latitude = it.latitude, longitude = it.longitude),
@@ -69,6 +70,7 @@ class LocationRepository @Inject constructor(
         val locationPhotos = locationDao.getLocationPhotos(id)
 
         return Location(
+            id = id,
             name = locationDb.name,
             notes = locationDb.notes,
             latLng = LatLng(latitude = locationDb.latitude, longitude = locationDb.longitude),

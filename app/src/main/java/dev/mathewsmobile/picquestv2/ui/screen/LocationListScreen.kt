@@ -33,7 +33,7 @@ object LocationListScreen {
 @Composable
 fun LocationListScreen(
     navController: NavController,
-    viewModel: LocationListViewModel
+    viewModel: LocationListViewModel,
 ) {
     val state = viewModel.uiStateFlow.collectAsState().value
 
@@ -41,14 +41,23 @@ fun LocationListScreen(
         Initial -> {
             viewModel.fetchLocations()
         }
+
         Loading -> {
             LoadingComponent()
         }
+
         Loaded -> {
-            LocationListComponent(state.locations) {
-                navController.navigate(NewLocationScreen.route)
-            }
+            LocationListComponent(
+                state.locations,
+                onAddClick = {
+                    navController.navigate(NewLocationScreen.route)
+                },
+                onLocationClick = {
+                    navController.navigate("${ViewLocationScreen.route}/$it")
+                }
+            )
         }
+
         Error -> {
             Text("Error")
         }
@@ -57,11 +66,17 @@ fun LocationListScreen(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LocationListComponent(locations: List<Location>, onAddClick: () -> Unit) {
+fun LocationListComponent(
+    locations: List<Location>,
+    onAddClick: () -> Unit,
+    onLocationClick: (Int) -> Unit,
+) {
     Scaffold(
         topBar = {
-            TopAppBar(title = { Text("PicQuest", color = Color.White) },
-                colors = TopAppBarDefaults.smallTopAppBarColors(containerColor = MaterialTheme.colorScheme.primary))
+            TopAppBar(
+                title = { Text("PicQuest", color = Color.White) },
+                colors = TopAppBarDefaults.smallTopAppBarColors(containerColor = MaterialTheme.colorScheme.primary)
+            )
         },
         floatingActionButton = {
             AddLocationFab(onAddClick)
@@ -71,7 +86,9 @@ fun LocationListComponent(locations: List<Location>, onAddClick: () -> Unit) {
                 .padding(it)
                 .fillMaxSize()
         ) {
-            LocationList(locations)
+            LocationList(locations) {
+                onLocationClick(it)
+            }
         }
     }
 }
@@ -79,5 +96,5 @@ fun LocationListComponent(locations: List<Location>, onAddClick: () -> Unit) {
 @Preview
 @Composable
 fun LocationListScreenPreview() {
-    LocationListComponent(LocationRepository.testLocations, {})
+    LocationListComponent(LocationRepository.testLocations, {}, {})
 }

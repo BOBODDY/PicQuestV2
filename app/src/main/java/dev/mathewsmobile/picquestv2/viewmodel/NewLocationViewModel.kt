@@ -47,6 +47,15 @@ class NewLocationViewModel @Inject constructor(
     private val _photosState = MutableStateFlow(emptyList<Uri>())
     val photos = _photosState.asStateFlow()
 
+    fun clear() {
+        viewModelScope.launch {
+            _selectedTags.emit(emptyList())
+            _nameState.emit("")
+            _notesState.emit("")
+            _photosState.emit(emptyList())
+        }
+    }
+
     fun addNewLocation(name: String, notes: String, tags: List<Tag>) {
         viewModelScope.launch {
             val location = Location(
