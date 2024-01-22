@@ -1,6 +1,5 @@
 package dev.mathewsmobile.picquestv2.model.db
 
-import android.net.Uri
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 

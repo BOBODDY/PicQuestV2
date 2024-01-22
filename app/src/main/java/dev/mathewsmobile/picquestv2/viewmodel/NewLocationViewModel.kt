@@ -1,7 +1,6 @@
 package dev.mathewsmobile.picquestv2.viewmodel
 
 import android.net.Uri
-import androidx.compose.runtime.collectAsState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mapbox.geojson.Point
@@ -19,7 +18,7 @@ import javax.inject.Inject
 @HiltViewModel
 class NewLocationViewModel @Inject constructor(
     private val locationRepository: LocationRepository,
-    private val tagRepository: TagRepository,
+    tagRepository: TagRepository,
 ) : ViewModel() {
 
     val tags = tagRepository.getAllTags()
