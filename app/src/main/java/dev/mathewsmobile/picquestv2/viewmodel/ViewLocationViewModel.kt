@@ -16,15 +16,6 @@ class ViewLocationViewModel @Inject constructor(
     private val locationRepository: LocationRepository,
 ): ViewModel() {
 
-    private val _nameState = MutableStateFlow("")
-    val name = _nameState.asStateFlow()
-
-    private val _descriptionState = MutableStateFlow("")
-    val description = _descriptionState.asStateFlow()
-
-    private val _tagsState = MutableStateFlow(emptyList<Tag>())
-    val tags = _tagsState.asStateFlow()
-
     private val _locationState = MutableStateFlow<Location?>(null)
     val location = _locationState.asStateFlow()
 

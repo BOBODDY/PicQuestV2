@@ -82,7 +82,7 @@ fun ViewLocation(
                     .clip(RoundedCornerShape(4.dp))
                     .animateContentSize()
             ) {
-                MapDisplay(mapViewportState = it)
+                MapDisplay(interactionEnabled = false, mapViewportState = it)
                 Image(
                     Icons.Default.LocationOn,
                     modifier = Modifier.align(Alignment.Center),
