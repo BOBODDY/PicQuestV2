@@ -25,7 +25,7 @@ fun MapComponent(
 
     LocationEffect(viewModel)
     Box {
-        MapDisplay(mapViewportState = mapViewportState)
+        MapDisplay(mapViewportState = mapViewportState, pinnedLocation = null)
         IconButton(
             modifier = Modifier.align(Alignment.BottomEnd),
             onClick = { onExpandMapTapped() }) {

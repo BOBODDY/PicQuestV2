@@ -82,12 +82,7 @@ fun ViewLocation(
                     .clip(RoundedCornerShape(4.dp))
                     .animateContentSize()
             ) {
-                MapDisplay(interactionEnabled = false, mapViewportState = it)
-                Image(
-                    Icons.Default.LocationOn,
-                    modifier = Modifier.align(Alignment.Center),
-                    contentDescription = null
-                )
+                MapDisplay(interactionEnabled = false, mapViewportState = it, location)
             }
         }
         Spacer(modifier = Modifier.height(8.dp))
