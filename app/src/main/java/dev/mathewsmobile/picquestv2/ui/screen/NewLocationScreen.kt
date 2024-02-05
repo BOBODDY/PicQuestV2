@@ -14,7 +14,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetLayout
 import androidx.compose.material.ModalBottomSheetValue
@@ -73,9 +75,10 @@ fun NewLocationScreen(
     val selectedTags by viewModel.selectedTags.collectAsState()
     val photos by viewModel.photos.collectAsState()
 
-    val launcher = rememberLauncherForActivityResult(ActivityResultContracts.PickMultipleVisualMedia()) { uris ->
-        uris.forEach { viewModel.addPhoto(it) }
-    }
+    val launcher =
+        rememberLauncherForActivityResult(ActivityResultContracts.PickMultipleVisualMedia()) { uris ->
+            uris.forEach { viewModel.addPhoto(it) }
+        }
 
     NewLocationComponent(
         mapViewModel = mapViewModel,
@@ -135,8 +138,11 @@ fun NewLocationComponent(
             LocationNotesExplanation()
         }
     ) {
-        Column(modifier = Modifier
-            .padding(8.dp)) {
+        Column(
+            modifier = Modifier
+                .padding(8.dp)
+                .verticalScroll(rememberScrollState())
+        ) {
             Icon(
                 Icons.Default.Close,
                 modifier = Modifier
@@ -170,7 +176,6 @@ fun NewLocationComponent(
                 }
             )
             Spacer(modifier = Modifier.height(16.dp))
-
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
