@@ -1,6 +1,6 @@
 package dev.mathewsmobile.picquestv2.viewmodel
 
-import androidx.compose.runtime.collectAsState
+import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mapbox.geojson.Point
@@ -18,7 +18,7 @@ import javax.inject.Inject
 @HiltViewModel
 class NewLocationViewModel @Inject constructor(
     private val locationRepository: LocationRepository,
-    private val tagRepository: TagRepository,
+    tagRepository: TagRepository,
 ) : ViewModel() {
 
     val tags = tagRepository.getAllTags()
@@ -44,6 +44,18 @@ class NewLocationViewModel @Inject constructor(
 
     private var locationPoint: Point? = null
 
+    private val _photosState = MutableStateFlow(emptyList<Uri>())
+    val photos = _photosState.asStateFlow()
+
+    fun clear() {
+        viewModelScope.launch {
+            _selectedTags.emit(emptyList())
+            _nameState.emit("")
+            _notesState.emit("")
+            _photosState.emit(emptyList())
+        }
+    }
+
     fun addNewLocation(name: String, notes: String, tags: List<Tag>) {
         viewModelScope.launch {
             val location = Location(
@@ -53,7 +65,8 @@ class NewLocationViewModel @Inject constructor(
                 latLng = LatLng(
                     locationPoint?.latitude()?.toFloat(),
                     locationPoint?.longitude()?.toFloat()
-                )
+                ),
+                photoUris = _photosState.value
             )
             locationRepository.addLocation(location)
         }
@@ -73,5 +86,11 @@ class NewLocationViewModel @Inject constructor(
 
     fun setLocation(point: Point) {
         locationPoint = point
+    }
+
+    fun addPhoto(uri: Uri) {
+        viewModelScope.launch {
+            _photosState.emit(_photosState.value + uri)
+        }
     }
 }

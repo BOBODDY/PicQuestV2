@@ -63,6 +63,7 @@ dependencies {
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)
     implementation(libs.androidx.material)
+    implementation(libs.coil)
     kapt(libs.androidx.room.compiler)
     kapt(libs.hilt.compiler)
 

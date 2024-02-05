@@ -1,6 +1,11 @@
 package dev.mathewsmobile.picquestv2.ui.screen
 
-import androidx.activity.viewModels
+import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.animation.animateContentSize
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -9,13 +14,16 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetLayout
 import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -38,14 +46,13 @@ import androidx.compose.ui.text.font.FontWeight.Companion.Bold
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.mapbox.geojson.Point
 import com.mapbox.maps.MapboxExperimental
 import dev.mathewsmobile.picquestv2.data.TagRepository
 import dev.mathewsmobile.picquestv2.model.Tag
 import dev.mathewsmobile.picquestv2.ui.component.LocationNotesExplanation
 import dev.mathewsmobile.picquestv2.ui.component.MapComponent
+import dev.mathewsmobile.picquestv2.ui.component.PhotoPicker
 import dev.mathewsmobile.picquestv2.ui.component.TagGroup
 import dev.mathewsmobile.picquestv2.viewmodel.MapViewModel
 import dev.mathewsmobile.picquestv2.viewmodel.NewLocationViewModel
@@ -66,6 +73,12 @@ fun NewLocationScreen(
     val notes by viewModel.notes.collectAsState()
     val tags by viewModel.tags.collectAsState(initial = emptyList())
     val selectedTags by viewModel.selectedTags.collectAsState()
+    val photos by viewModel.photos.collectAsState()
+
+    val launcher =
+        rememberLauncherForActivityResult(ActivityResultContracts.PickMultipleVisualMedia()) { uris ->
+            uris.forEach { viewModel.addPhoto(it) }
+        }
 
     NewLocationComponent(
         mapViewModel = mapViewModel,
@@ -73,6 +86,7 @@ fun NewLocationScreen(
         notes = notes,
         allTags = tags,
         selectedTags = selectedTags,
+        photos = photos,
         onNameChange = { viewModel.setName(it) },
         onNoteChange = { viewModel.setNotes(it) },
         onTagChanged = { viewModel.toggleTag(it) },
@@ -81,7 +95,10 @@ fun NewLocationScreen(
             viewModel.addNewLocation(name, notes, selectedTags)
             navController.popBackStack()
         },
-        onCloseClick = { navController.popBackStack() }
+        onCloseClick = { navController.popBackStack() },
+        onAddImage = {
+            launcher.launch(PickVisualMediaRequest(mediaType = ActivityResultContracts.PickVisualMedia.ImageOnly))
+        }
     )
 }
 
@@ -93,15 +110,26 @@ fun NewLocationComponent(
     notes: String,
     allTags: List<Tag>,
     selectedTags: List<Tag>,
+    photos: List<Uri>,
     onNameChange: (String) -> Unit,
     onNoteChange: (String) -> Unit,
     onTagChanged: (Tag) -> Unit,
+    onAddImage: () -> Unit,
     onSaveClick: () -> Unit,
     onCloseClick: () -> Unit,
 ) {
     val sheetState = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
     var showBottomSheet by remember { mutableStateOf(false) }
     val coroutineScope = rememberCoroutineScope()
+
+    var mapExpanded by remember {
+        mutableStateOf(false)
+    }
+    val mapHeight = if (mapExpanded) {
+        512.dp
+    } else {
+        256.dp
+    }
 
     ModalBottomSheetLayout(
         sheetState = sheetState,
@@ -110,7 +138,11 @@ fun NewLocationComponent(
             LocationNotesExplanation()
         }
     ) {
-        Column(modifier = Modifier.padding(8.dp)) {
+        Column(
+            modifier = Modifier
+                .padding(8.dp)
+                .verticalScroll(rememberScrollState())
+        ) {
             Icon(
                 Icons.Default.Close,
                 modifier = Modifier
@@ -144,19 +176,28 @@ fun NewLocationComponent(
                 }
             )
             Spacer(modifier = Modifier.height(16.dp))
-
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(256.dp)
+                    .height(mapHeight)
                     .clip(RoundedCornerShape(4.dp))
+                    .animateContentSize()
             ) {
-                MapComponent(mapViewModel)
+                MapComponent(mapViewModel) { mapExpanded = !mapExpanded }
+                Image(
+                    Icons.Default.LocationOn,
+                    modifier = Modifier.align(Alignment.Center),
+                    contentDescription = null
+                )
             }
 
             Spacer(modifier = Modifier.height(16.dp))
             TagGroup(availableTags = allTags, selectedTags = selectedTags) {
                 onTagChanged(it)
+            }
+            Spacer(modifier = Modifier.height(16.dp))
+            PhotoPicker(photos = photos) {
+                onAddImage()
             }
             Spacer(modifier = Modifier.height(16.dp))
             Button(
@@ -172,16 +213,19 @@ fun NewLocationComponent(
 @Preview
 @Composable
 fun Preview() {
+    val mapViewModel = MapViewModel()
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colorScheme.background
     ) {
         NewLocationComponent(
-            viewModel(),
+            mapViewModel,
             "Big Bend National Park",
             "Perfect for astrophotography",
             TagRepository.testTags,
             emptyList(),
+            emptyList(),
+            {},
             {},
             {},
             {},
