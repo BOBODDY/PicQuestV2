@@ -20,6 +20,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetLayout
 import androidx.compose.material.ModalBottomSheetValue
+import androidx.compose.material3.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Info
@@ -29,6 +30,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -131,80 +133,91 @@ fun NewLocationComponent(
         256.dp
     }
 
-    ModalBottomSheetLayout(
-        sheetState = sheetState,
-        sheetShape = RoundedCornerShape(topStart = 12.dp, topEnd = 12.dp),
-        sheetContent = {
-            LocationNotesExplanation()
-        }
-    ) {
-        Column(
-            modifier = Modifier
-                .padding(8.dp)
-                .verticalScroll(rememberScrollState())
-        ) {
-            Icon(
-                Icons.Default.Close,
-                modifier = Modifier
-                    .padding(8.dp)
-                    .clickable { onCloseClick() },
-                contentDescription = null
-            )
-            Text("Add a New Location", fontSize = 32.sp, fontWeight = Bold)
-            Spacer(modifier = Modifier.height(16.dp))
-            TextField(
-                modifier = Modifier.fillMaxWidth(),
-                value = name,
-                onValueChange = onNameChange,
-                label = { Text("Location Name") },
-                singleLine = true,
-            )
-            Spacer(modifier = Modifier.height(16.dp))
-            TextField(
-                modifier = Modifier.fillMaxWidth(),
-                value = notes,
-                onValueChange = onNoteChange,
-                label = { Text("Notes") },
-                trailingIcon = {
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text("Add a New Location", fontSize = 24.sp, fontWeight = Bold) },
+                navigationIcon = {
                     Icon(
-                        Icons.Default.Info,
-                        modifier = Modifier.clickable {
-                            coroutineScope.launch { sheetState.show() }; showBottomSheet = true
-                        },
+                        Icons.Default.Close,
+                        modifier = Modifier
+                            .padding(8.dp)
+                            .clickable { onCloseClick() },
                         contentDescription = null
                     )
                 }
             )
-            Spacer(modifier = Modifier.height(16.dp))
-            Box(
+        }
+    ) {
+        ModalBottomSheetLayout(
+            modifier = Modifier.padding(it),
+            sheetState = sheetState,
+            sheetShape = RoundedCornerShape(topStart = 12.dp, topEnd = 12.dp),
+            sheetContent = {
+                LocationNotesExplanation()
+            }
+        ) {
+            Column(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .height(mapHeight)
-                    .clip(RoundedCornerShape(4.dp))
-                    .animateContentSize()
+                    .padding(8.dp)
+                    .verticalScroll(rememberScrollState())
             ) {
-                MapComponent(mapViewModel) { mapExpanded = !mapExpanded }
-                Image(
-                    Icons.Default.LocationOn,
-                    modifier = Modifier.align(Alignment.Center),
-                    contentDescription = null
-                )
-            }
 
-            Spacer(modifier = Modifier.height(16.dp))
-            TagGroup(availableTags = allTags, selectedTags = selectedTags) {
-                onTagChanged(it)
-            }
-            Spacer(modifier = Modifier.height(16.dp))
-            PhotoPicker(photos = photos) {
-                onAddImage()
-            }
-            Spacer(modifier = Modifier.height(16.dp))
-            Button(
-                modifier = Modifier.align(Alignment.CenterHorizontally),
-                onClick = onSaveClick
-            ) {
-                Text("Save")
+                Spacer(modifier = Modifier.height(16.dp))
+                TextField(
+                    modifier = Modifier.fillMaxWidth(),
+                    value = name,
+                    onValueChange = onNameChange,
+                    label = { Text("Location Name") },
+                    singleLine = true,
+                )
+                Spacer(modifier = Modifier.height(16.dp))
+                TextField(
+                    modifier = Modifier.fillMaxWidth(),
+                    value = notes,
+                    onValueChange = onNoteChange,
+                    label = { Text("Notes") },
+                    trailingIcon = {
+                        Icon(
+                            Icons.Default.Info,
+                            modifier = Modifier.clickable {
+                                coroutineScope.launch { sheetState.show() }; showBottomSheet = true
+                            },
+                            contentDescription = null
+                        )
+                    }
+                )
+                Spacer(modifier = Modifier.height(16.dp))
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(mapHeight)
+                        .clip(RoundedCornerShape(4.dp))
+                        .animateContentSize()
+                ) {
+                    MapComponent(mapViewModel) { mapExpanded = !mapExpanded }
+                    Image(
+                        Icons.Default.LocationOn,
+                        modifier = Modifier.align(Alignment.Center),
+                        contentDescription = null
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(16.dp))
+                TagGroup(availableTags = allTags, selectedTags = selectedTags) {
+                    onTagChanged(it)
+                }
+                Spacer(modifier = Modifier.height(16.dp))
+                PhotoPicker(photos = photos) {
+                    onAddImage()
+                }
+                Spacer(modifier = Modifier.height(16.dp))
+                Button(
+                    modifier = Modifier.align(Alignment.CenterHorizontally),
+                    onClick = onSaveClick
+                ) {
+                    Text("Save")
+                }
             }
         }
     }
