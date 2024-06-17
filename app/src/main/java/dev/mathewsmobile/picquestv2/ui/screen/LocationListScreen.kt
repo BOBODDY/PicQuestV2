@@ -17,7 +17,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import dev.mathewsmobile.picquestv2.data.LocationRepository
 import dev.mathewsmobile.picquestv2.data.UiStatus.Error
-import dev.mathewsmobile.picquestv2.data.UiStatus.Initial
 import dev.mathewsmobile.picquestv2.data.UiStatus.Loaded
 import dev.mathewsmobile.picquestv2.data.UiStatus.Loading
 import dev.mathewsmobile.picquestv2.model.Location
@@ -35,13 +34,9 @@ fun LocationListScreen(
     navController: NavController,
     viewModel: LocationListViewModel,
 ) {
-    val state = viewModel.uiStateFlow.collectAsState().value
+    val state = viewModel.state.collectAsState().value
 
     when (state.status) {
-        Initial -> {
-            viewModel.fetchLocations()
-        }
-
         Loading -> {
             LoadingComponent()
         }

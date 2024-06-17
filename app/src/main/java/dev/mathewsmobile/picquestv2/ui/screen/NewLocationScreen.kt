@@ -8,12 +8,12 @@ import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetLayout
@@ -135,26 +135,26 @@ fun NewLocationComponent(
             LocationNotesExplanation()
         }
     ) {
-        Column(modifier = Modifier
-            .padding(8.dp)) {
-            Icon(
+        LazyColumn {
+            item { Icon(
                 Icons.Default.Close,
                 modifier = Modifier
                     .padding(8.dp)
                     .clickable { onCloseClick() },
-                contentDescription = null
-            )
-            Text("Add a New Location", fontSize = 32.sp, fontWeight = Bold)
-            Spacer(modifier = Modifier.height(16.dp))
-            TextField(
+                contentDescription = "Close"
+            ) }
+
+            item { Text("Add a New Location", fontSize = 32.sp, fontWeight = Bold) }
+            item { Spacer(modifier = Modifier.height(16.dp)) }
+            item { TextField(
                 modifier = Modifier.fillMaxWidth(),
                 value = name,
                 onValueChange = onNameChange,
                 label = { Text("Location Name") },
                 singleLine = true,
-            )
-            Spacer(modifier = Modifier.height(16.dp))
-            TextField(
+            ) }
+            item { Spacer(modifier = Modifier.height(16.dp)) }
+            item { TextField(
                 modifier = Modifier.fillMaxWidth(),
                 value = notes,
                 onValueChange = onNoteChange,
@@ -168,10 +168,10 @@ fun NewLocationComponent(
                         contentDescription = null
                     )
                 }
-            )
-            Spacer(modifier = Modifier.height(16.dp))
+            )}
 
-            Box(
+            item { Spacer(modifier = Modifier.height(16.dp)) }
+            item {Box(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(mapHeight)
@@ -184,24 +184,93 @@ fun NewLocationComponent(
                     modifier = Modifier.align(Alignment.Center),
                     contentDescription = null
                 )
-            }
-
-            Spacer(modifier = Modifier.height(16.dp))
-            TagGroup(availableTags = allTags, selectedTags = selectedTags) {
+            }}
+            item { Spacer(modifier = Modifier.height(16.dp))}
+            item { TagGroup(availableTags = allTags, selectedTags = selectedTags) {
                 onTagChanged(it)
-            }
-            Spacer(modifier = Modifier.height(16.dp))
-            PhotoPicker(photos = photos) {
+            } }
+            item { Spacer(modifier = Modifier.height(16.dp))}
+            item { PhotoPicker(photos = photos) {
                 onAddImage()
-            }
-            Spacer(modifier = Modifier.height(16.dp))
-            Button(
-                modifier = Modifier.align(Alignment.CenterHorizontally),
-                onClick = onSaveClick
-            ) {
-                Text("Save")
+            }}
+            item { Spacer(modifier = Modifier.height(16.dp))}
+            item {
+                Button(
+//                    modifier = Modifier.align(Alignment.CenterHorizontally),
+                    onClick = onSaveClick
+                ) {
+                    Text("Save")
+                }
             }
         }
+//        Column(modifier = Modifier
+//            .padding(8.dp)
+//            .verticalScroll(rememberScrollState())) {
+//            Icon(
+//                Icons.Default.Close,
+//                modifier = Modifier
+//                    .padding(8.dp)
+//                    .clickable { onCloseClick() },
+//                contentDescription = null
+//            )
+//            Text("Add a New Location", fontSize = 32.sp, fontWeight = Bold)
+//            Spacer(modifier = Modifier.height(16.dp))
+//            TextField(
+//                modifier = Modifier.fillMaxWidth(),
+//                value = name,
+//                onValueChange = onNameChange,
+//                label = { Text("Location Name") },
+//                singleLine = true,
+//            )
+//            Spacer(modifier = Modifier.height(16.dp))
+//            TextField(
+//                modifier = Modifier.fillMaxWidth(),
+//                value = notes,
+//                onValueChange = onNoteChange,
+//                label = { Text("Notes") },
+//                trailingIcon = {
+//                    Icon(
+//                        Icons.Default.Info,
+//                        modifier = Modifier.clickable {
+//                            coroutineScope.launch { sheetState.show() }; showBottomSheet = true
+//                        },
+//                        contentDescription = null
+//                    )
+//                }
+//            )
+//            Spacer(modifier = Modifier.height(16.dp))
+//
+//            Box(
+//                modifier = Modifier
+//                    .fillMaxWidth()
+//                    .height(mapHeight)
+//                    .clip(RoundedCornerShape(4.dp))
+//                    .animateContentSize()
+//            ) {
+//                MapComponent(mapViewModel) { mapExpanded = !mapExpanded }
+//                Image(
+//                    Icons.Default.LocationOn,
+//                    modifier = Modifier.align(Alignment.Center),
+//                    contentDescription = null
+//                )
+//            }
+//
+//            Spacer(modifier = Modifier.height(16.dp))
+//            TagGroup(availableTags = allTags, selectedTags = selectedTags) {
+//                onTagChanged(it)
+//            }
+//            Spacer(modifier = Modifier.height(16.dp))
+//            PhotoPicker(photos = photos) {
+//                onAddImage()
+//            }
+//            Spacer(modifier = Modifier.height(16.dp))
+//            Button(
+//                modifier = Modifier.align(Alignment.CenterHorizontally),
+//                onClick = onSaveClick
+//            ) {
+//                Text("Save")
+//            }
+//        }
     }
 }
 
