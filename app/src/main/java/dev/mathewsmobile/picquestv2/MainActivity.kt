@@ -15,6 +15,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.mapbox.maps.MapboxExperimental
 import dagger.hilt.android.AndroidEntryPoint
+import dev.mathewsmobile.picquestv2.data.LocationRepository
 import dev.mathewsmobile.picquestv2.ui.screen.LocationListScreen
 import dev.mathewsmobile.picquestv2.ui.screen.NewLocationScreen
 import dev.mathewsmobile.picquestv2.ui.screen.ViewLocationScreen
@@ -23,9 +24,14 @@ import dev.mathewsmobile.picquestv2.viewmodel.LocationListViewModel
 import dev.mathewsmobile.picquestv2.viewmodel.MapViewModel
 import dev.mathewsmobile.picquestv2.viewmodel.NewLocationViewModel
 import dev.mathewsmobile.picquestv2.viewmodel.ViewLocationViewModel
+import dev.mathewsmobile.picquestv2.viewmodel.ViewLocationViewModelFactory
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
+    @Inject
+    lateinit var locationRepository: LocationRepository
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,8 +62,9 @@ class MainActivity : ComponentActivity() {
                             navArgument("locationId") { type = NavType.IntType },
                         )) { backstackEntry ->
                             val locationId = backstackEntry.arguments?.getInt("locationId") ?: throw IllegalArgumentException("Must pass a valid location ID")
-                            val viewModel by viewModels<ViewLocationViewModel>()
-                            viewModel.setLocation(locationId)
+                            val viewModel by viewModels<ViewLocationViewModel> {
+                                ViewLocationViewModelFactory(locationRepository, locationId)
+                            }
                             ViewLocationScreen(viewModel = viewModel, navController = navController)
                         }
                     }
