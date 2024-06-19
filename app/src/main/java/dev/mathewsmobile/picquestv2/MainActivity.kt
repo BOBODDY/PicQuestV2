@@ -15,6 +15,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import dagger.hilt.android.AndroidEntryPoint
 import dev.mathewsmobile.picquestv2.data.LocationRepository
+import dev.mathewsmobile.picquestv2.ui.NewLocationFlow
 import dev.mathewsmobile.picquestv2.ui.screen.LocationListScreen
 import dev.mathewsmobile.picquestv2.ui.screen.NewLocationScreen
 import dev.mathewsmobile.picquestv2.ui.screen.ViewLocationScreen
@@ -55,7 +56,8 @@ class MainActivity : ComponentActivity() {
                             val viewModel by viewModels<NewLocationViewModel>()
                             val mapViewModel by viewModels<MapViewModel>()
                             viewModel.clear()
-                            NewLocationScreen(navController, viewModel, mapViewModel)
+//                            NewLocationScreen(navController, viewModel, mapViewModel)
+                            NewLocationFlow(viewModel = viewModel, navController = navController)
                         }
                         composable("${ViewLocationScreen.route}/{locationId}",arguments = listOf(
                             navArgument("locationId") { type = NavType.IntType },

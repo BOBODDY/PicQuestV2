@@ -72,6 +72,22 @@ class NewLocationViewModel @Inject constructor(
         }
     }
 
+    fun addNewLocation() {
+        viewModelScope.launch {
+            val location = Location(
+                name = name.value,
+                notes = notes.value,
+                tags = selectedTags.value,
+                latLng = LatLng(
+                    locationPoint?.latitude()?.toFloat(),
+                    locationPoint?.longitude()?.toFloat()
+                ),
+                photoUris = _photosState.value
+            )
+            locationRepository.addLocation(location)
+        }
+    }
+
     fun toggleTag(tag: Tag) {
         val tags = _selectedTags.value
         val newTags = if (tags.contains(tag)) {

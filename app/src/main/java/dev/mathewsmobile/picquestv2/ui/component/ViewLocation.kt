@@ -41,17 +41,19 @@ fun ViewLocation(
     onCloseClick: () -> Unit,
 ) {
     val mapViewportState = location?.let { latLng ->
-        rememberMapViewportState().apply {
-            setCameraOptions {
-                zoom(12.0)
-                center(
-                    Point.fromLngLat(
-                        latLng.longitude!!.toDouble(),
-                        latLng.latitude!!.toDouble()
+        latLng.latitude?.let {
+            rememberMapViewportState().apply {
+                setCameraOptions {
+                    zoom(12.0)
+                    center(
+                        Point.fromLngLat(
+                            latLng.longitude!!.toDouble(),
+                            latLng.latitude.toDouble()
+                        )
                     )
-                )
-                pitch(0.0)
-                bearing(0.0)
+                    pitch(0.0)
+                    bearing(0.0)
+                }
             }
         }
     }
