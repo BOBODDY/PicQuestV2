@@ -25,6 +25,7 @@ import dev.mathewsmobile.picquestv2.model.Location
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LocationListComponent(
+    modifier: Modifier = Modifier,
     locations: List<Location>,
     onAddClick: () -> Unit,
     onLocationClick: (Int) -> Unit,
@@ -39,15 +40,7 @@ fun LocationListComponent(
             AddLocationFab(onAddClick)
         }) {
         if (locations.isEmpty()) {
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    Icon(Icons.Default.LocationOn, modifier = Modifier.size(36.dp), contentDescription = null)
-                    Text("Add a location below", fontSize = 16.sp)
-                }
-            }
+            EmptyLocations(modifier)
         } else {
             Box(
                 modifier = Modifier
@@ -62,14 +55,28 @@ fun LocationListComponent(
     }
 }
 
+@Composable
+fun EmptyLocations(modifier: Modifier = Modifier) {
+    Box(
+        modifier = modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ) {
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            Icon(Icons.Default.LocationOn, modifier = modifier.size(36.dp), contentDescription = null)
+            Text("Add a location below", fontSize = 16.sp)
+        }
+    }
+
+}
+
 @Preview
 @Composable
 fun LocationListScreenPreview() {
-    LocationListComponent(LocationRepository.testLocations, {}, {})
+    LocationListComponent(Modifier, LocationRepository.testLocations, {}, {})
 }
 
 @Preview
 @Composable
 fun LocationListScreenEmptyPreview() {
-    LocationListComponent(emptyList(), {}, {})
+    LocationListComponent(Modifier, emptyList(), {}, {})
 }

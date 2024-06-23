@@ -12,7 +12,9 @@ fun LocationList(locations: List<Location>, onItemTapped: (Int) -> Unit) {
     LazyColumn {
         items(locations.size) {
             val location = locations[it]
-            Box(modifier = Modifier.clickable { onItemTapped(location.id) }) {
+            Box(modifier = Modifier.clickable {
+                onItemTapped(location.id)
+            }) {
                 LocationCell(location)
             }
         }
