@@ -50,14 +50,13 @@ class MainActivity : ComponentActivity() {
                     ) {
                         composable(LocationListScreen.route) {
                             val viewModel by viewModels<LocationListViewModel>()
-                            LocationListScreen(navController, viewModel = viewModel)
+                            LocationListScreen(Modifier, navController, viewModel = viewModel)
                         }
                         composable(NewLocationScreen.route) {
                             val viewModel by viewModels<NewLocationViewModel>()
                             val mapViewModel by viewModels<MapViewModel>()
                             viewModel.clear()
-//                            NewLocationScreen(navController, viewModel, mapViewModel)
-                            NewLocationFlow(viewModel = viewModel, navController = navController)
+                            NewLocationFlow(viewModel = viewModel, navController = navController, mapViewModel = mapViewModel)
                         }
                         composable("${ViewLocationScreen.route}/{locationId}",arguments = listOf(
                             navArgument("locationId") { type = NavType.IntType },

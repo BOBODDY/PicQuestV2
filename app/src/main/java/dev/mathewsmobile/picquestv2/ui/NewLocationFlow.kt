@@ -3,7 +3,9 @@ package dev.mathewsmobile.picquestv2.ui
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -18,12 +20,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -35,26 +39,29 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight.Companion.Bold
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import dev.mathewsmobile.picquestv2.ui.NewLocationFlowScreens.Details
-import dev.mathewsmobile.picquestv2.ui.NewLocationFlowScreens.Photos
-import dev.mathewsmobile.picquestv2.ui.NewLocationFlowScreens.Tags
+import dev.mathewsmobile.picquestv2.ui.NewLocationFlowScreens.*
+import dev.mathewsmobile.picquestv2.ui.component.MapComponent
 import dev.mathewsmobile.picquestv2.ui.component.PhotoPicker
 import dev.mathewsmobile.picquestv2.ui.component.TagGroup
+import dev.mathewsmobile.picquestv2.viewmodel.MapViewModel
 import dev.mathewsmobile.picquestv2.viewmodel.NewLocationViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 enum class NewLocationFlowScreens {
-    Details, Tags, Photos
+    Details, Tags, Location, Photos
 }
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -62,12 +69,13 @@ enum class NewLocationFlowScreens {
 fun NewLocationFlow(
     modifier: Modifier = Modifier,
     viewModel: NewLocationViewModel,
+    mapViewModel: MapViewModel,
     navController: NavController
 ) {
     val coroutineScope = rememberCoroutineScope()
 
     val screens = listOf(
-        Details, Tags, Photos
+        Details, Tags, Location, Photos
     )
 
     val pagerState = rememberPagerState(pageCount = { screens.size })
@@ -79,6 +87,7 @@ fun NewLocationFlow(
                 if (pagerState.currentPage == (screens.size - 1)) {
                     // TODO Implement the map
 //                    viewModel.setLocation(mapViewModel.mapViewportState.value.cameraState.center)
+                    // TODO Make sure everything is filled in correctly
                     viewModel.addNewLocation()
                     navController.popBackStack()
                 } else {
@@ -118,6 +127,13 @@ fun NewLocationFlow(
                     modifier = modifier,
                     config = config,
                     viewModel = viewModel,
+                )
+
+                Location -> MapScreen(
+                    modifier = modifier,
+                    config = config,
+                    viewModel = viewModel,
+                    mapViewModel = mapViewModel,
                 )
             }
 
@@ -223,6 +239,30 @@ fun PhotosScreen(
                 launcher.launch(PickVisualMediaRequest(mediaType = ActivityResultContracts.PickVisualMedia.ImageOnly))
             }
         }
+    }
+}
+
+@Composable
+fun MapScreen(
+    modifier: Modifier = Modifier,
+    config: ScreenConfig,
+    viewModel: NewLocationViewModel,
+    mapViewModel: MapViewModel,
+) {
+
+    Box(
+        modifier = modifier
+            .fillMaxWidth()
+            .height(512.dp)
+            .clip(RoundedCornerShape(4.dp))
+            .animateContentSize()
+    ) {
+        MapComponent(mapViewModel, false) {  }
+        Image(
+            Icons.Default.LocationOn,
+            modifier = modifier.align(Alignment.Center),
+            contentDescription = null
+        )
     }
 }
 

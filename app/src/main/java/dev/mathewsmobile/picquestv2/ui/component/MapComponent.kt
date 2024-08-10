@@ -18,6 +18,7 @@ import dev.mathewsmobile.picquestv2.viewmodel.MapViewModel
 @Composable
 fun MapComponent(
     viewModel: MapViewModel,
+    expandable: Boolean,
     onExpandMapTapped: () -> Unit,
 ) {
 
@@ -26,10 +27,12 @@ fun MapComponent(
     LocationEffect(viewModel)
     Box {
         MapDisplay(mapViewportState = mapViewportState, pinnedLocation = null)
-        IconButton(
-            modifier = Modifier.align(Alignment.BottomEnd),
-            onClick = { onExpandMapTapped() }) {
-            Icon(Icons.Default.Menu, contentDescription = "Expand map picker")
+        if (expandable) {
+            IconButton(
+                modifier = Modifier.align(Alignment.BottomEnd),
+                onClick = { onExpandMapTapped() }) {
+                Icon(Icons.Default.Menu, contentDescription = "Expand map picker")
+            }
         }
     }
 }

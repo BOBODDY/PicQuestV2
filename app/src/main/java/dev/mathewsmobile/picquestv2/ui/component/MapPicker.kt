@@ -18,6 +18,6 @@ fun MapPicker(mapViewModel: MapViewModel, onMapShrinkTapped: () -> Unit) {
             .height(512.dp)
             .clip(RoundedCornerShape(8.dp))
     ) {
-        MapComponent(mapViewModel) { onMapShrinkTapped() }
+        MapComponent(mapViewModel, true) { onMapShrinkTapped() }
     }
 }
