@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dev.mathewsmobile.picquestv2.data.LocationRepository
 import dev.mathewsmobile.picquestv2.model.Location
+import dev.mathewsmobile.picquestv2.ui.theme.PicQuestV2Theme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -72,7 +73,9 @@ fun EmptyLocations(modifier: Modifier = Modifier) {
 @Preview
 @Composable
 fun LocationListScreenPreview() {
-    LocationListComponent(Modifier, LocationRepository.testLocations, {}, {})
+    PicQuestV2Theme {
+        LocationListComponent(Modifier, LocationRepository.testLocations, {}, {})
+    }
 }
 
 @Preview
