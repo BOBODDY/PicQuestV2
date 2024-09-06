@@ -1,9 +1,9 @@
 package dev.mathewsmobile.picquestv2.viewmodel
 
+import android.graphics.Point
 import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mapbox.geojson.Point
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.mathewsmobile.picquestv2.data.LocationRepository
 import dev.mathewsmobile.picquestv2.data.TagRepository
@@ -42,7 +42,7 @@ class NewLocationViewModel @Inject constructor(
         }
     }
 
-    private var locationPoint: Point? = null
+    private var locationPoint: com.google.android.gms.maps.model.LatLng? = null
 
     private val _photosState = MutableStateFlow(emptyList<Uri>())
     val photos = _photosState.asStateFlow()
@@ -63,8 +63,8 @@ class NewLocationViewModel @Inject constructor(
                 notes = notes,
                 tags = tags,
                 latLng = LatLng(
-                    locationPoint?.latitude()?.toFloat(),
-                    locationPoint?.longitude()?.toFloat()
+                    locationPoint?.latitude?.toFloat(),
+                    locationPoint?.longitude?.toFloat()
                 ),
                 photoUris = _photosState.value
             )
@@ -79,8 +79,8 @@ class NewLocationViewModel @Inject constructor(
                 notes = notes.value,
                 tags = selectedTags.value,
                 latLng = LatLng(
-                    locationPoint?.latitude()?.toFloat(),
-                    locationPoint?.longitude()?.toFloat()
+                    locationPoint?.latitude?.toFloat(),
+                    locationPoint?.longitude?.toFloat()
                 ),
                 photoUris = _photosState.value
             )
@@ -100,7 +100,7 @@ class NewLocationViewModel @Inject constructor(
         }
     }
 
-    fun setLocation(point: Point) {
+    fun setLocation(point: com.google.android.gms.maps.model.LatLng) {
         locationPoint = point
     }
 

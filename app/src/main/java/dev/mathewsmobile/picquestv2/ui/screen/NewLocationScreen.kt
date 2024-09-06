@@ -45,7 +45,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.mapbox.maps.MapboxExperimental
 import dev.mathewsmobile.picquestv2.data.TagRepository
 import dev.mathewsmobile.picquestv2.model.Tag
 import dev.mathewsmobile.picquestv2.ui.component.LocationNotesExplanation
@@ -60,7 +59,6 @@ object NewLocationScreen {
     const val route = "NewLocationScreen"
 }
 
-@OptIn(MapboxExperimental::class)
 @Composable
 fun NewLocationScreen(
     navController: NavController,
@@ -88,7 +86,6 @@ fun NewLocationScreen(
         onNoteChange = { viewModel.setNotes(it) },
         onTagChanged = { viewModel.toggleTag(it) },
         onSaveClick = {
-            viewModel.setLocation(mapViewModel.mapViewportState.value.cameraState.center)
             viewModel.addNewLocation(name, notes, selectedTags)
             navController.popBackStack()
         },

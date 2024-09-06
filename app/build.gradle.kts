@@ -4,6 +4,7 @@ plugins {
     kotlin("kapt")
     alias(libs.plugins.hilt)
     alias(libs.plugins.room)
+    alias(libs.plugins.compose.compiler)
 }
 
 room {
@@ -25,6 +26,8 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+
+        resValue("string", "maps_api_key", (project.findProperty("MAPS_API_STRING").toString()))
     }
 
     buildTypes {
@@ -66,8 +69,7 @@ dependencies {
     kapt(libs.androidx.room.compiler)
     kapt(libs.hilt.compiler)
 
-    implementation(libs.mapbox)
-    implementation(libs.mapbox.compose)
+    implementation(libs.google.maps)
 
     implementation(libs.accompanist.permissions)
 

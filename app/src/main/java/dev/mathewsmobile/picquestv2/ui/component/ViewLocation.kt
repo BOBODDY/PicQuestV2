@@ -24,13 +24,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.mapbox.geojson.Point
-import com.mapbox.maps.MapboxExperimental
-import com.mapbox.maps.extension.compose.animation.viewport.rememberMapViewportState
 import dev.mathewsmobile.picquestv2.model.LatLng
 import dev.mathewsmobile.picquestv2.model.Tag
 
-@OptIn(MapboxExperimental::class)
 @Composable
 fun ViewLocation(
     name: String,
@@ -40,23 +36,6 @@ fun ViewLocation(
     photos: List<Uri>,
     onCloseClick: () -> Unit,
 ) {
-    val mapViewportState = location?.let { latLng ->
-        latLng.latitude?.let {
-            rememberMapViewportState().apply {
-                setCameraOptions {
-                    zoom(12.0)
-                    center(
-                        Point.fromLngLat(
-                            latLng.longitude!!.toDouble(),
-                            latLng.latitude.toDouble()
-                        )
-                    )
-                    pitch(0.0)
-                    bearing(0.0)
-                }
-            }
-        }
-    }
     Column(
         modifier = Modifier
             .padding(8.dp)
@@ -73,7 +52,6 @@ fun ViewLocation(
         Text(description, fontSize = 16.sp)
         Spacer(modifier = Modifier.height(8.dp))
 
-        mapViewportState?.let {
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -81,9 +59,8 @@ fun ViewLocation(
                     .clip(RoundedCornerShape(4.dp))
                     .animateContentSize()
             ) {
-                MapDisplay(interactionEnabled = false, mapViewportState = it, location)
+                // TODO Show Google map
             }
-        }
         Spacer(modifier = Modifier.height(8.dp))
         TagGroup(enabled = false, availableTags = tags, selectedTags = tags) {}
         Spacer(modifier = Modifier.height(8.dp))
