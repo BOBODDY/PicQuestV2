@@ -25,11 +25,13 @@ class MapViewModel @Inject constructor() : ViewModel() {
     )
     val currentLocation = _currentLocationState.asStateFlow()
 
-
-
-    fun updateUserLocation(latitude: Double, longitude: Double) {
+    fun updateUserLocation(latitude: Double?, longitude: Double?) {
         viewModelScope.launch {
-            _currentLocationState.emit(Location(latitude, longitude))
+            latitude?.let {
+                longitude?.let {
+                    _currentLocationState.emit(Location(latitude, longitude))
+                }
+            }
         }
     }
 }

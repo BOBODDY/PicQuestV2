@@ -28,7 +28,7 @@ fun LocationEffect(mapViewModel: MapViewModel) {
             // Get the location from the location result.
             val location = locationResult.lastLocation
 
-            mapViewModel.updateUserLocation(location.latitude, location.longitude)
+            mapViewModel.updateUserLocation(location?.latitude, location?.longitude)
         }
     }
 
