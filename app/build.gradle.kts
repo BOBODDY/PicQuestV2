@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.hilt)
     alias(libs.plugins.room)
     alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.serialization)
 }
 
 room {
@@ -74,6 +75,8 @@ dependencies {
     implementation(libs.accompanist.permissions)
 
     implementation(libs.location.services)
+
+    implementation(libs.kotlin.serialization)
 
     // Default, came with new project setup
     implementation(libs.core.ktx)

@@ -6,10 +6,10 @@ import androidx.compose.runtime.getValue
 import androidx.navigation.NavController
 import dev.mathewsmobile.picquestv2.ui.component.ViewLocation
 import dev.mathewsmobile.picquestv2.viewmodel.ViewLocationViewModel
+import kotlinx.serialization.Serializable
 
-object ViewLocationScreen {
-    const val route = "ViewLocation"
-}
+@Serializable
+data class ViewLocationScreen(val id: Int)
 
 @Composable
 fun ViewLocationScreen(viewModel: ViewLocationViewModel, navController: NavController) {

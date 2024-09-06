@@ -54,10 +54,10 @@ import dev.mathewsmobile.picquestv2.ui.component.TagGroup
 import dev.mathewsmobile.picquestv2.viewmodel.MapViewModel
 import dev.mathewsmobile.picquestv2.viewmodel.NewLocationViewModel
 import kotlinx.coroutines.launch
+import kotlinx.serialization.Serializable
 
-object NewLocationScreen {
-    const val route = "NewLocationScreen"
-}
+@Serializable
+object NewLocationScreen
 
 @Composable
 fun NewLocationScreen(

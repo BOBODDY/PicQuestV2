@@ -13,6 +13,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import androidx.navigation.toRoute
 import dagger.hilt.android.AndroidEntryPoint
 import dev.mathewsmobile.picquestv2.data.LocationRepository
 import dev.mathewsmobile.picquestv2.ui.NewLocationFlow
@@ -46,22 +47,20 @@ class MainActivity : ComponentActivity() {
                 ) {
                     NavHost(
                         navController = navController,
-                        startDestination = LocationListScreen.route
+                        startDestination = LocationListScreen
                     ) {
-                        composable(LocationListScreen.route) {
+                        composable<LocationListScreen> {
                             val viewModel by viewModels<LocationListViewModel>()
                             LocationListScreen(Modifier, navController, viewModel = viewModel)
                         }
-                        composable(NewLocationScreen.route) {
+                        composable<NewLocationScreen> {
                             val viewModel by viewModels<NewLocationViewModel>()
                             val mapViewModel by viewModels<MapViewModel>()
                             viewModel.clear()
                             NewLocationFlow(viewModel = viewModel, navController = navController, mapViewModel = mapViewModel)
                         }
-                        composable("${ViewLocationScreen.route}/{locationId}",arguments = listOf(
-                            navArgument("locationId") { type = NavType.IntType },
-                        )) { backstackEntry ->
-                            val locationId = backstackEntry.arguments?.getInt("locationId") ?: throw IllegalArgumentException("Must pass a valid location ID")
+                        composable<ViewLocationScreen> { backstackEntry ->
+                            val locationId: Int = backstackEntry.toRoute<ViewLocationScreen>().id
                             val viewModel by viewModels<ViewLocationViewModel> {
                                 ViewLocationViewModelFactory(locationRepository, locationId)
                             }

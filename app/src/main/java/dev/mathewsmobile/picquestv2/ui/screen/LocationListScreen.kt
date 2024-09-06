@@ -11,10 +11,10 @@ import dev.mathewsmobile.picquestv2.data.UiStatus.Loading
 import dev.mathewsmobile.picquestv2.ui.component.LoadingComponent
 import dev.mathewsmobile.picquestv2.ui.component.LocationListComponent
 import dev.mathewsmobile.picquestv2.viewmodel.LocationListViewModel
+import kotlinx.serialization.Serializable
 
-object LocationListScreen {
-    const val route = "LocationListScreen"
-}
+@Serializable
+object LocationListScreen
 
 @Composable
 fun LocationListScreen(
@@ -33,10 +33,10 @@ fun LocationListScreen(
                 modifier,
                 state.locations,
                 onAddClick = {
-                    navController.navigate(NewLocationScreen.route)
+                    navController.navigate(NewLocationScreen)
                 },
                 onLocationClick = {
-                    navController.navigate("${ViewLocationScreen.route}/$it")
+                    navController.navigate(ViewLocationScreen(it))
                 }
             )
         }
