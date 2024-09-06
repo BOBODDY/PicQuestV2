@@ -11,13 +11,13 @@ import androidx.compose.ui.unit.dp
 import dev.mathewsmobile.picquestv2.viewmodel.MapViewModel
 
 @Composable
-fun MapPicker(mapViewModel: MapViewModel, onMapShrinkTapped: () -> Unit) {
+fun MapPicker(modifier: Modifier = Modifier, mapViewModel: MapViewModel, onMapShrinkTapped: () -> Unit) {
     Box(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .height(512.dp)
             .clip(RoundedCornerShape(8.dp))
     ) {
-        MapComponent(mapViewModel, true) { onMapShrinkTapped() }
+        MapComponent(modifier, mapViewModel, true) { onMapShrinkTapped() }
     }
 }

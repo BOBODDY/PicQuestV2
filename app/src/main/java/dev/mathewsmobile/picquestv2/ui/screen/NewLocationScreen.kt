@@ -175,7 +175,7 @@ fun NewLocationComponent(
                     .clip(RoundedCornerShape(4.dp))
                     .animateContentSize()
             ) {
-                MapComponent(mapViewModel, true) { mapExpanded = !mapExpanded }
+                MapComponent(Modifier, mapViewModel, true) { mapExpanded = !mapExpanded }
                 Image(
                     Icons.Default.LocationOn,
                     modifier = Modifier.align(Alignment.Center),

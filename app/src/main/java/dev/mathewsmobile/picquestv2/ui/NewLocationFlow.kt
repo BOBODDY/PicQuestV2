@@ -48,10 +48,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight.Companion.Bold
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import dev.mathewsmobile.picquestv2.ui.NewLocationFlowScreens.*
+import dev.mathewsmobile.picquestv2.ui.component.LocationDetails
+import dev.mathewsmobile.picquestv2.ui.component.LocationMap
+import dev.mathewsmobile.picquestv2.ui.component.LocationPhotos
+import dev.mathewsmobile.picquestv2.ui.component.LocationTags
 import dev.mathewsmobile.picquestv2.ui.component.MapComponent
 import dev.mathewsmobile.picquestv2.ui.component.PhotoPicker
 import dev.mathewsmobile.picquestv2.ui.component.TagGroup
@@ -151,7 +157,6 @@ data class ScreenConfig(
     val progress: Float,
 )
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DetailsScreen(
     modifier: Modifier = Modifier,
@@ -162,62 +167,25 @@ fun DetailsScreen(
     val name by viewModel.name.collectAsState()
     val notes by viewModel.notes.collectAsState()
 
-    Box {
-        LazyColumn(
-            modifier
-                .padding(16.dp)
-                .fillMaxSize()
-        ) {
-            item { Text("Add a New Location", fontSize = 32.sp, fontWeight = Bold) }
-            item { Spacer(modifier = Modifier.height(16.dp)) }
-            item {
-                TextField(
-                    modifier = Modifier.fillMaxWidth(),
-                    value = name,
-                    onValueChange = { viewModel.setName(it) },
-                    label = { Text("Location Name") },
-                    singleLine = true,
-                )
-            }
-            item { Spacer(modifier = Modifier.height(16.dp)) }
-            item {
-                TextField(
-                    modifier = Modifier.fillMaxWidth(),
-                    value = notes,
-                    onValueChange = { viewModel.setNotes(it) },
-                    label = { Text("Notes") },
-                    trailingIcon = {
-                        Icon(
-                            Icons.Default.Info,
-                            modifier = Modifier.clickable {
-//                                coroutineScope.launch { sheetState.show() }; showBottomSheet = true
-                            },
-                            contentDescription = null
-                        )
-                    }
-                )
-            }
-        }
-    }
+    LocationDetails(
+        modifier,
+        name,
+        notes,
+        setName = { viewModel.setName(it) },
+        setNotes = { viewModel.setNotes(it) }
+    )
 }
 
 @Composable
 fun TagsScreen(
-    modifier: Modifier = Modifier, config: ScreenConfig,
+    modifier: Modifier = Modifier,
+    config: ScreenConfig,
     viewModel: NewLocationViewModel
 ) {
     val tags by viewModel.tags.collectAsState(initial = emptyList())
     val selectedTags by viewModel.selectedTags.collectAsState()
-    Box {
-        Column(modifier.fillMaxSize()) {
-            Text("Add some tags", fontSize = 24.sp)
-            Text("These can be anything from conditions you want to come back to this location with to what equipment you want.")
-            TagGroup(availableTags = tags, selectedTags = selectedTags) {
-                viewModel.toggleTag(it)
-            }
-        }
-    }
 
+    LocationTags(modifier, tags, selectedTags) { viewModel.toggleTag(it) }
 }
 
 @Composable
@@ -231,14 +199,8 @@ fun PhotosScreen(
         rememberLauncherForActivityResult(ActivityResultContracts.PickMultipleVisualMedia()) { uris ->
             uris.forEach { viewModel.addPhoto(it) }
         }
-    Box {
-        Column(modifier.fillMaxSize()) {
-            Text("Photos", fontSize = 24.sp)
-            Text("Add some photos as a reminder of what you want from this location.")
-            PhotoPicker(photos = photos) {
-                launcher.launch(PickVisualMediaRequest(mediaType = ActivityResultContracts.PickVisualMedia.ImageOnly))
-            }
-        }
+    LocationPhotos(modifier, photos) {
+        launcher.launch(PickVisualMediaRequest(mediaType = ActivityResultContracts.PickVisualMedia.ImageOnly))
     }
 }
 
@@ -249,21 +211,7 @@ fun MapScreen(
     viewModel: NewLocationViewModel,
     mapViewModel: MapViewModel,
 ) {
-
-    Box(
-        modifier = modifier
-            .fillMaxWidth()
-            .height(512.dp)
-            .clip(RoundedCornerShape(4.dp))
-            .animateContentSize()
-    ) {
-        MapComponent(mapViewModel, false) {  }
-        Image(
-            Icons.Default.LocationOn,
-            modifier = modifier.align(Alignment.Center),
-            contentDescription = null
-        )
-    }
+    LocationMap(modifier, mapViewModel)
 }
 
 @Composable
