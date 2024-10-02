@@ -28,7 +28,7 @@ android {
             useSupportLibrary = true
         }
 
-        resValue("string", "maps_api_key", (project.findProperty("MAPS_API_STRING").toString()))
+        resValue("string", "maps_api_key", (project.findProperty("MAPS_API_KEY").toString()))
     }
 
     buildTypes {
