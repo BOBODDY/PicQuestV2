@@ -17,10 +17,7 @@ fun LocationEffect(mapViewModel: MapViewModel) {
     val context = LocalContext.current.applicationContext
 
     // Create a LocationRequest object.
-    val locationRequest = LocationRequest.create()
-    locationRequest.interval = 10000
-    locationRequest.fastestInterval = 5000
-    locationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+    val locationRequest = LocationRequest.Builder(LocationRequest.PRIORITY_HIGH_ACCURACY, 10000).build()
 
     // Create a LocationCallback object.
     val locationCallback = object : LocationCallback() {
