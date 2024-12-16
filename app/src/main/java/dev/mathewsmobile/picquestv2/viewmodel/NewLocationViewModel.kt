@@ -1,12 +1,11 @@
 package dev.mathewsmobile.picquestv2.viewmodel
 
-import android.graphics.Point
 import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dev.mathewsmobile.picquestv2.data.LocationRepository
 import dev.mathewsmobile.picquestv2.data.TagRepository
+import dev.mathewsmobile.picquestv2.data.usecase.AddLocationUseCase
 import dev.mathewsmobile.picquestv2.model.LatLng
 import dev.mathewsmobile.picquestv2.model.Location
 import dev.mathewsmobile.picquestv2.model.Tag
@@ -17,7 +16,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class NewLocationViewModel @Inject constructor(
-    private val locationRepository: LocationRepository,
+    private val addLocationUseCase: AddLocationUseCase,
     tagRepository: TagRepository,
 ) : ViewModel() {
 
@@ -68,7 +67,7 @@ class NewLocationViewModel @Inject constructor(
                 ),
                 photoUris = _photosState.value
             )
-            locationRepository.addLocation(location)
+            addLocationUseCase(location)
         }
     }
 
@@ -84,7 +83,7 @@ class NewLocationViewModel @Inject constructor(
                 ),
                 photoUris = _photosState.value
             )
-            locationRepository.addLocation(location)
+            addLocationUseCase(location)
         }
     }
 
